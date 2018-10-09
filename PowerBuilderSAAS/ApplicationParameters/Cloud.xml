@@ -6,8 +6,5 @@
     <Parameter Name="StatefulBackendService_MinReplicaSetSize" Value="3" />
     <Parameter Name="StatefulBackendService_TargetReplicaSetSize" Value="3" />
     <Parameter Name="StatelessBackendService_InstanceCount" Value="-1" />
-    <Parameter Name="WebStarter_PartitionCount" Value="1" />
-    <Parameter Name="WebStarter_MinReplicaSetSize" Value="3" />
-    <Parameter Name="WebStarter_TargetReplicaSetSize" Value="3" />
   </Parameters>
 </Application>
