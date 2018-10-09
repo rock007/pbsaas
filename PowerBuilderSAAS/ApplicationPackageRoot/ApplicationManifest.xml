@@ -1,0 +1,79 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ApplicationManifest xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ApplicationTypeName="PowerBuilderSAASType" ApplicationTypeVersion="1.0.0" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="WebBackend_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="WebBackend_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="StatefulBackendService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="StatefulBackendService_PartitionCount" DefaultValue="1" />
+    <Parameter Name="StatefulBackendService_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="StatelessBackendService_InstanceCount" DefaultValue="-1" />
+    <Parameter Name="WebStarter_ASPNETCORE_ENVIRONMENT" DefaultValue="" />
+    <Parameter Name="WebStarter_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="WebStarter_PartitionCount" DefaultValue="1" />
+    <Parameter Name="WebStarter_TargetReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ActorBackendServiceActorService_PartitionCount" DefaultValue="10" />
+    <Parameter Name="ActorBackendServiceActorService_MinReplicaSetSize" DefaultValue="3" />
+    <Parameter Name="ActorBackendServiceActorService_TargetReplicaSetSize" DefaultValue="3" />
+    <!--MyActorService -->
+  </Parameters>
+  <!-- 从 ServicePackage 导入 ServiceManifest。ServiceManifestName 和 ServiceManifestVersion
+       应与 ServiceManifest.xml 文件中定义的 ServiceManifest 元素的
+       名称属性和版本属性相匹配。 -->
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="WebBackendPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[WebBackend_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="StatefulBackendServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="ActorBackendServicePkg" ServiceManifestVersion="1.0.0" />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="StatelessBackendServicePkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+  </ServiceManifestImport>
+  <ServiceManifestImport>
+    <ServiceManifestRef ServiceManifestName="WebStarterPkg" ServiceManifestVersion="1.0.0" />
+    <ConfigOverrides />
+    <EnvironmentOverrides CodePackageRef="code">
+      <EnvironmentVariable Name="ASPNETCORE_ENVIRONMENT" Value="[WebStarter_ASPNETCORE_ENVIRONMENT]" />
+    </EnvironmentOverrides>
+  </ServiceManifestImport>
+  <DefaultServices>
+    <!-- 在创建此应用程序类型时，以下部分
+         将创建服务类型的实例。你还可以使用 ServiceFabric PowerShell 模块创建
+          一个或多个服务类型实例。
+         
+         以下属性 ServiceTypeName 必须与导入的 ServiceManifest.xml 文件中所定义的名称相匹配。 -->
+    <Service Name="WebBackend" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="WebBackendType" InstanceCount="[WebBackend_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="StatefulBackendService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="StatefulBackendServiceType" TargetReplicaSetSize="[StatefulBackendService_TargetReplicaSetSize]" MinReplicaSetSize="[StatefulBackendService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[StatefulBackendService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="StatelessBackendService" ServicePackageActivationMode="ExclusiveProcess">
+      <StatelessService ServiceTypeName="StatelessBackendServiceType" InstanceCount="[StatelessBackendService_InstanceCount]">
+        <SingletonPartition />
+      </StatelessService>
+    </Service>
+    <Service Name="WebStarter" ServicePackageActivationMode="ExclusiveProcess">
+      <StatefulService ServiceTypeName="WebStarterType" TargetReplicaSetSize="[WebStarter_TargetReplicaSetSize]" MinReplicaSetSize="[WebStarter_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[WebStarter_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+    <Service Name="ActorBackendServiceActorService" GeneratedIdRef="dcd0db21-6839-4ee1-bd52-c3a20c17150f|Persisted">
+      <StatefulService ServiceTypeName="ActorBackendServiceActorServiceType" TargetReplicaSetSize="[ActorBackendServiceActorService_TargetReplicaSetSize]" MinReplicaSetSize="[ActorBackendServiceActorService_MinReplicaSetSize]">
+        <UniformInt64Partition PartitionCount="[ActorBackendServiceActorService_PartitionCount]" LowKey="-9223372036854775808" HighKey="9223372036854775807" />
+      </StatefulService>
+    </Service>
+  </DefaultServices>
+</ApplicationManifest>

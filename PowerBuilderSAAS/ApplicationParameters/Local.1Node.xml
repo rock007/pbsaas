@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Application xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Name="fabric:/PowerBuilderSAAS" xmlns="http://schemas.microsoft.com/2011/01/fabric">
+  <Parameters>
+    <Parameter Name="WebBackend_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="WebBackend_InstanceCount" Value="1" />
+    <Parameter Name="StatefulBackendService_PartitionCount" Value="1" />
+    <Parameter Name="StatefulBackendService_MinReplicaSetSize" Value="1" />
+    <Parameter Name="StatefulBackendService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="StatelessBackendService_InstanceCount" Value="1" />
+    <Parameter Name="WebStarter_ASPNETCORE_ENVIRONMENT" Value="Development" />
+    <Parameter Name="WebStarter_PartitionCount" Value="1" />
+    <Parameter Name="WebStarter_MinReplicaSetSize" Value="1" />
+    <Parameter Name="WebStarter_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ActorBackendServiceActorService_PartitionCount" Value="1" />
+    <Parameter Name="ActorBackendServiceActorService_TargetReplicaSetSize" Value="1" />
+    <Parameter Name="ActorBackendServiceActorService_MinReplicaSetSize" Value="1" />
+  </Parameters>
+</Application>
